@@ -62,7 +62,7 @@ Cursor Kit is part of the broader ecosystem of AI-powered development tools. Thi
 
 1. **Clone or use this template**:
    ```bash
-   git clone https://github.com/your-org/cursor-kit.git my-project
+   git clone https://github.com/0x8687/cursor-kit.git my-project
    cd my-project
    ```
 
