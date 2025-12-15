@@ -223,7 +223,7 @@ def get_api_key_or_exit(skill_dir: Optional[Path] = None) -> Tuple[Optional[str]
     api_key, api_base_url = find_api_key(skill_dir)
 
     if not api_key:
-        print("\n❌ Error: GEMINI_API_KEY not found!", file=sys.stderr)
+        print("\n❌ Error: ETERNALAI_API_KEY not found!", file=sys.stderr)
         print("\n📋 Please set your API key using one of these methods (in priority order):", file=sys.stderr)
 
         if skill_dir is None:
@@ -231,19 +231,19 @@ def get_api_key_or_exit(skill_dir: Optional[Path] = None) -> Tuple[Optional[str]
         project_dir = skill_dir.parent.parent.parent
 
         print("\n1️⃣  Environment variable (recommended for development):", file=sys.stderr)
-        print("   export GEMINI_API_KEY='your-api-key'", file=sys.stderr)
+        print("   export ETERNALAI_API_KEY='your-api-key'", file=sys.stderr)
 
         print("\n2️⃣  Project root .env file:", file=sys.stderr)
-        print(f"   echo 'GEMINI_API_KEY=your-api-key' > {project_dir}/.env", file=sys.stderr)
+        print(f"   echo 'ETERNALAI_API_KEY=your-api-key' > {project_dir}/.env", file=sys.stderr)
 
         print("\n3️⃣  .cursor/.env file:", file=sys.stderr)
-        print(f"   echo 'GEMINI_API_KEY=your-api-key' > {project_dir}/.cursor/.env", file=sys.stderr)
+        print(f"   echo 'ETERNALAI_API_KEY=your-api-key' > {project_dir}/.cursor/.env", file=sys.stderr)
 
         print("\n4️⃣  .cursor/skills/.env file (shared across all Gemini skills):", file=sys.stderr)
-        print(f"   echo 'GEMINI_API_KEY=your-api-key' > {project_dir}/.cursor/skills/.env", file=sys.stderr)
+        print(f"   echo 'ETERNALAI_API_KEY=your-api-key' > {project_dir}/.cursor/skills/.env", file=sys.stderr)
 
         print("\n5️⃣  Skill directory .env file:", file=sys.stderr)
-        print(f"   echo 'GEMINI_API_KEY=your-api-key' > {skill_dir}/.env", file=sys.stderr)
+        print(f"   echo 'ETERNALAI_API_KEY=your-api-key' > {skill_dir}/.env", file=sys.stderr)
 
         print("\n🔑 Get your API key at: https://aistudio.google.com/apikey", file=sys.stderr)
         print("\n💡 Tip: Add .env files to .gitignore to avoid committing API keys", file=sys.stderr)

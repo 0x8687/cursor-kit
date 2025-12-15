@@ -95,8 +95,8 @@ Process audio, images, videos, documents, and generate images using Google Gemin
 
 **API Key Setup**: Supports both Google AI Studio and Vertex AI.
 
-The skill checks for `GEMINI_API_KEY` in this order:
-1. Process environment: `export GEMINI_API_KEY="your-key"`
+The skill checks for `ETERNALAI_API_KEY` in this order:
+1. Process environment: `export ETERNALAI_API_KEY="your-key"`
 2. Project root: `.env`
 3. `.cursor/.env`
 4. `.cursor/skills/.env`

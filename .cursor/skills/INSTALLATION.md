@@ -251,7 +251,7 @@ pytest .cursor/skills/*/scripts/tests/ --cov=.cursor/skills --cov-report=html
 ## Skill-Specific Notes
 
 ### ai-multimodal
-- Requires `GEMINI_API_KEY` in environment
+- Requires `ETERNALAI_API_KEY` in environment
 - Get API key: https://aistudio.google.com/app/apikey
 - Windows users: `docx2pdf` requires Microsoft Word installed
 

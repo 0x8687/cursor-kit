@@ -184,9 +184,9 @@ test_gemini_batch_process.py:250: in test_batch_process_dry_run
     sys.exit(1)
 E   SystemExit: 1
 ----------------------------- Captured stdout call -----------------------------
-Error: GEMINI_API_KEY not found
-Set via: export GEMINI_API_KEY='your-key'
-Or create .env file with: GEMINI_API_KEY=your-key
+Error: ETERNALAI_API_KEY not found
+Set via: export ETERNALAI_API_KEY='your-key'
+Or create .env file with: ETERNALAI_API_KEY=your-key
 ______________________ TestFFmpegCheck.test_ffmpeg_error _______________________
 test_media_optimizer.py:35: in test_ffmpeg_error
     assert mo.check_ffmpeg() is False

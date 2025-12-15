@@ -24,31 +24,31 @@ api_key = get_api_key_or_exit()
 
 ### API Key Lookup Order
 
-The helper checks for `GEMINI_API_KEY` in this order:
+The helper checks for `ETERNALAI_API_KEY` in this order:
 
 1. **Process environment variable** (recommended for development)
    ```bash
-   export GEMINI_API_KEY='your-api-key'
+   export ETERNALAI_API_KEY='your-api-key'
    ```
 
 2. **Project root `.env` file**
    ```bash
-   echo 'GEMINI_API_KEY=your-api-key' > .env
+   echo 'ETERNALAI_API_KEY=your-api-key' > .env
    ```
 
 3. **.cursor/.env file**
    ```bash
-   echo 'GEMINI_API_KEY=your-api-key' > .cursor/.env
+   echo 'ETERNALAI_API_KEY=your-api-key' > .cursor/.env
    ```
 
 4. **.cursor/skills/.env file** (shared across all Gemini skills)
    ```bash
-   echo 'GEMINI_API_KEY=your-api-key' > .cursor/skills/.env
+   echo 'ETERNALAI_API_KEY=your-api-key' > .cursor/skills/.env
    ```
 
 5. **Skill directory `.env` file**
    ```bash
-   echo 'GEMINI_API_KEY=your-api-key' > .cursor/skills/your-skill/.env
+   echo 'ETERNALAI_API_KEY=your-api-key' > .cursor/skills/your-skill/.env
    ```
 
 ### Vertex AI Support

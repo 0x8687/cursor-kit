@@ -15,7 +15,7 @@ import document_converter as dc
 class TestAPIKeyFinder:
     """Test API key finding logic."""
 
-    @patch.dict('os.environ', {'GEMINI_API_KEY': 'test-key-from-env'})
+    @patch.dict('os.environ', {'ETERNALAI_API_KEY': 'test-key-from-env'})
     def test_find_api_key_from_env(self):
         """Test finding API key from environment."""
         api_key = dc.find_api_key()

@@ -18,13 +18,13 @@ class TestAPIKeyFinder:
 
     def test_find_api_key_from_env(self, monkeypatch):
         """Test finding API key from environment variable."""
-        monkeypatch.setenv('GEMINI_API_KEY', 'test_key_123')
+        monkeypatch.setenv('ETERNALAI_API_KEY', 'test_key_123')
         assert gbp.find_api_key() == 'test_key_123'
 
     @patch('gemini_batch_process.load_dotenv')
     def test_find_api_key_not_found(self, mock_load_dotenv, monkeypatch):
         """Test when API key is not found."""
-        monkeypatch.delenv('GEMINI_API_KEY', raising=False)
+        monkeypatch.delenv('ETERNALAI_API_KEY', raising=False)
         # Mock load_dotenv to not actually load any files
         mock_load_dotenv.return_value = None
         assert gbp.find_api_key() is None
