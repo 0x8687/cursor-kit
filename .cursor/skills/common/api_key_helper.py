@@ -23,9 +23,9 @@ from pathlib import Path
 from typing import Optional, Dict, Any
 
 
-def find_api_key(skill_dir: Optional[Path] = None) -> Optional[str]:
+def find_api_key(skill_dir: Optional[Path] = None) -> Tuple[Optional[str], Optional[str]]:
     """
-    Find GEMINI_API_KEY using 5-step lookup:
+    Find ETERNALAI_API_KEY using 5-step lookup:
     1. Process environment
     2. Project root .env
     3. ./.cursor/.env
@@ -39,10 +39,11 @@ def find_api_key(skill_dir: Optional[Path] = None) -> Optional[str]:
         API key string or None if not found
     """
     # Step 1: Check process environment
-    api_key = os.getenv('GEMINI_API_KEY')
-    if api_key:
+    api_key = os.getenv('ETERNALAI_API_KEY')
+    api_base_url = os.getenv('ETERNALAI_API_BASE_URL')
+    if api_key and api_base_url:
         print("✓ Using API key from environment variable", file=sys.stderr)
-        return api_key
+        return api_key, api_base_url
 
     # Determine paths
     if skill_dir is None:
@@ -52,31 +53,31 @@ def find_api_key(skill_dir: Optional[Path] = None) -> Optional[str]:
     # Step 2: Check project root .env
     project_env = project_dir / '.env'
     if project_env.exists():
-        api_key = load_env_file(project_env)
-        if api_key:
+        api_key, api_base_url = load_env_file(project_env)
+        if api_key and api_base_url:
             print(f"✓ Using API key from {project_env}", file=sys.stderr)
             return api_key
 
     # Step 3: Check ./.cursor/.env
     claude_env = project_dir / '.cursor' / '.env'
     if claude_env.exists():
-        api_key = load_env_file(claude_env)
-        if api_key:
+        api_key, api_base_url    = load_env_file(claude_env)
+        if api_key and api_base_url:
             print(f"✓ Using API key from {claude_env}", file=sys.stderr)
             return api_key
 
     # Step 4: Check ./.cursor/skills/.env
     claude_skills_env = project_dir / '.cursor' / 'skills' / '.env'
     if claude_skills_env.exists():
-        api_key = load_env_file(claude_skills_env)
-        if api_key:
+        api_key, api_base_url = load_env_file(claude_skills_env)
+        if api_key and api_base_url:
             print(f"✓ Using API key from {claude_skills_env}", file=sys.stderr)
             return api_key
 
     # Step 5: Check skill directory .env
     skill_env = skill_dir / '.env'
     if skill_env.exists():
-        api_key = load_env_file(skill_env)
+        api_key, api_base_url = load_env_file(skill_env)
         if api_key:
             print(f"✓ Using API key from {skill_env}", file=sys.stderr)
             return api_key
@@ -84,30 +85,38 @@ def find_api_key(skill_dir: Optional[Path] = None) -> Optional[str]:
     return None
 
 
-def load_env_file(env_path: Path) -> Optional[str]:
+def load_env_file(env_path: Path) -> Tuple[Optional[str], Optional[str]]:
     """
-    Load GEMINI_API_KEY from .env file
+    Load ETERNALAI_API_KEY and ETERNALAI_API_BASE_URL from .env file
 
     Args:
         env_path: Path to .env file
 
     Returns:
-        API key or None
+        API key and API base URL or None
     """
     try:
+        api_key = None
+        api_base_url = None
         with open(env_path, 'r') as f:
             for line in f:
                 line = line.strip()
-                if line.startswith('GEMINI_API_KEY='):
+                if line.startswith('ETERNALAI_API_KEY='):
                     # Extract value, removing quotes if present
                     value = line.split('=', 1)[1].strip()
                     value = value.strip('"').strip("'")
                     if value:
-                        return value
+                        api_key = value
+                elif line.startswith('ETERNALAI_API_BASE_URL='):
+                    # Extract value, removing quotes if present
+                    value = line.split('=', 1)[1].strip()
+                    value = value.strip('"').strip("'")
+                    if value:
+                        api_base_url = value
     except Exception as e:
         print(f"Warning: Error reading {env_path}: {e}", file=sys.stderr)
 
-    return None
+    return api_key, api_base_url
 
 
 def load_env_var(env_path: Path, var_name: str) -> Optional[str]:
@@ -201,7 +210,7 @@ def get_vertex_config(skill_dir: Optional[Path] = None) -> Dict[str, Any]:
     return config
 
 
-def get_api_key_or_exit(skill_dir: Optional[Path] = None) -> str:
+def get_api_key_or_exit(skill_dir: Optional[Path] = None) -> Tuple[Optional[str], Optional[str]]:
     """
     Get API key or exit with helpful error message
 
@@ -211,7 +220,7 @@ def get_api_key_or_exit(skill_dir: Optional[Path] = None) -> str:
     Returns:
         API key string
     """
-    api_key = find_api_key(skill_dir)
+    api_key, api_base_url = find_api_key(skill_dir)
 
     if not api_key:
         print("\n❌ Error: GEMINI_API_KEY not found!", file=sys.stderr)
@@ -240,7 +249,7 @@ def get_api_key_or_exit(skill_dir: Optional[Path] = None) -> str:
         print("\n💡 Tip: Add .env files to .gitignore to avoid committing API keys", file=sys.stderr)
         sys.exit(1)
 
-    return api_key
+    return api_key, api_base_url
 
 
 def get_client(skill_dir: Optional[Path] = None):
@@ -281,15 +290,15 @@ def get_client(skill_dir: Optional[Path] = None):
         # Use AI Studio
         from google import genai
 
-        api_key = get_api_key_or_exit(skill_dir)
-        client = genai.Client(api_key=api_key)
+        api_key, api_base_url = get_api_key_or_exit(skill_dir)
+        client = genai.Client(api_key=api_key, api_base_url=api_base_url)
 
         return {'type': 'aistudio', 'client': client}
 
 
 if __name__ == '__main__':
     # Test the API key detection
-    api_key = get_api_key_or_exit()
+    api_key, api_base_url = get_api_key_or_exit()
     print(f"✓ Found API key: {api_key[:8]}..." + "*" * (len(api_key) - 8))
 
     # Test Vertex AI config
