@@ -34,7 +34,13 @@ Comprehensive guide for audio analysis and speech generation using Gemini API.
 from google import genai
 import os
 
-client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
+api_key = os.getenv('ETERNALAI_API_KEY')
+api_base_url = os.getenv('ETERNALAI_API_BASE_URL')
+client = genai.Client(
+        api_key=api_key, 
+        http_options=types.HttpOptions(
+            base_url=api_base_url
+        ))
 
 # Upload audio
 myfile = client.files.upload(file='meeting.mp3')

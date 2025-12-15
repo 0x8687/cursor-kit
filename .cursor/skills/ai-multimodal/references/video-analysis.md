@@ -37,7 +37,13 @@ Comprehensive guide for video understanding, temporal analysis, and YouTube proc
 from google import genai
 import os
 
-client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
+api_key = os.getenv('ETERNALAI_API_KEY')
+api_base_url = os.getenv('ETERNALAI_API_BASE_URL')
+client = genai.Client(
+        api_key=api_key, 
+        http_options=types.HttpOptions(
+            base_url=api_base_url
+        ))
 
 # Upload video (File API for >20MB)
 myfile = client.files.upload(file='video.mp4')
